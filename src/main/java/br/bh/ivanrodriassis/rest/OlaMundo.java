@@ -17,7 +17,11 @@ public class OlaMundo {
 		
 //		Envio de uma requisição Get / A resposta do método colocado na variável local		
 		Response response = RestAssured.request(Method.GET, "http://restapi.wcaquino.me/ola");
+		
 //		Imprime o corpo do conteúdo da mensagem de resposta
-		System.out.println(response.getBody().asString());		
+		System.out.println(response.getBody().asString());
+		
+//		Imprime o status code
+		System.out.println(response.statusCode());
 	}
 }
