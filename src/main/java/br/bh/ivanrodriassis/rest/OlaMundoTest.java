@@ -8,11 +8,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.hamcrest.Matchers;
-import org.hamcrest.core.IsNot;
 import org.junit.Assert;
 import org.junit.Test;
-
-import com.sun.xml.internal.ws.client.sei.ResponseBuilder.Body;
 
 import io.restassured.http.Method;
 import io.restassured.response.Response;
@@ -67,7 +64,9 @@ public class OlaMundoTest {
 		
 		List<Integer> impares = Arrays.asList(1,3,5,7,9);
 //		Assert.assertThat(impares, Matchers.hasSize(5));
-//		Com importação estática
+
+//		import static io.restassured.RestAssured.*;
+//		Com importação estática (import static org.hamcrest.Matchers.*;)
 		assertThat(impares, hasSize(5));
 		assertThat(impares, contains(1,3,5,7,9));
 		assertThat(impares, containsInAnyOrder(1,3,9,5,7));
@@ -92,5 +91,5 @@ public class OlaMundoTest {
 			.body(containsString("Mundo"))
 			.body(is(not(nullValue())));
 	}
-	
+		
 }
