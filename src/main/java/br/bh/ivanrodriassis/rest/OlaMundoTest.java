@@ -12,6 +12,8 @@ import org.hamcrest.core.IsNot;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.sun.xml.internal.ws.client.sei.ResponseBuilder.Body;
+
 import io.restassured.http.Method;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
@@ -77,6 +79,18 @@ public class OlaMundoTest {
 		assertThat("Maria", not("João"));
 		assertThat("Maria", anyOf(is("Maria"), is("Joaquina")));
 		assertThat("Joaquina", allOf(startsWith("Joa"), endsWith("ina"), containsString("qui")));		
-		
 	}
+	
+	@Test
+	public void devoValidarBody() {
+		given() 
+		.when() 
+			.get("http://restapi.wcaquino.me/ola")
+		.then() 
+			.statusCode(200)		
+			.body(is("Ola Mundo!")) // Valida o corpo da mensagem
+			.body(containsString("Mundo"))
+			.body(is(not(nullValue())));
+	}
+	
 }
