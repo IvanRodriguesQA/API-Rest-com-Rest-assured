@@ -44,11 +44,7 @@ public class OlaMundoTest {
 			.get("http://restapi.wcaquino.me/ola")
 		.then() // Verificações do resultado
 //			.assertThat();
-			.statusCode(201);
-			
-		
-	}
-	
-	
+			.statusCode(200);		
+	}	
 	
 }
