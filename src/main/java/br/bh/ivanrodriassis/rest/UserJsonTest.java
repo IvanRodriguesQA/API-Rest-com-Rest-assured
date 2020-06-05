@@ -77,4 +77,14 @@ public class UserJsonTest {
 		;						
 	}
 	
+	@Test
+	public void deveRetornarErroUsuarioInexistente() {
+		given()
+		.when()
+			.get("http://restapi.wcaquino.me/users/4")
+		.then()
+			.statusCode(404)
+			.body("error", Matchers.is(("Usuário inexistente")))								
+		;	
+	}
 }
