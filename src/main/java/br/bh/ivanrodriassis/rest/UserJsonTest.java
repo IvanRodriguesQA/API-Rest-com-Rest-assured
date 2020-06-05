@@ -28,7 +28,7 @@ public class UserJsonTest {
 			.body("age", Matchers.greaterThan(18))
 		;
 	}	
-//	Outros formas de verificar		
+//	Outras formas de verificar		
 	@Test	
 	public void deveVerificarPrimeiroNivelOutrasFormas() {
 		Response response = RestAssured.request(Method.GET, "http://restapi.wcaquino.me/users/1");
@@ -41,8 +41,23 @@ public class UserJsonTest {
 		JsonPath jpath = new JsonPath(response.asString()); // response.asString pega o conteúdo da mensagem
 		Assert.assertEquals(1, jpath.getInt("id"));
 		
-		// from -> metódo estátido do JsonPath
+		// from -> metódo estático do JsonPath
 		int id = JsonPath.from(response.asString()).getInt("id");
 		Assert.assertEquals(1, id);
 	}
+	
+	@Test
+	public void deveVerificarSegundoNivel() {
+		given()
+		.when()
+			.get("http://restapi.wcaquino.me/users/2")
+		.then()
+			.statusCode(200)
+			.body("id", Matchers.is(2))
+			.body("name", Matchers.containsString("Joaquina"))
+			.body("endereco.rua", Matchers.is("Rua dos bobos"))
+			.body("endereco.numero", Matchers.is(0))			
+		;				
+	}
+	
 }
