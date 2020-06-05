@@ -2,6 +2,8 @@ package br.bh.ivanrodriassis.rest;
 
 import static io.restassured.RestAssured.*;
 
+import java.util.Arrays;
+
 import org.hamcrest.Matchers;
 import org.hamcrest.Matchers.*;
 import org.junit.Assert;
@@ -87,4 +89,21 @@ public class UserJsonTest {
 			.body("error", Matchers.is(("Usuário inexistente")))								
 		;	
 	}
+	
+	@Test
+	public void deveVerificarListaRaiz() {
+		given()
+		.when()
+			.get("http://restapi.wcaquino.me/users")
+		.then()
+			.statusCode(200)
+			.body("$", Matchers.hasSize(3)) // "$" indica que está sendo procurado na raiz
+			.body("", Matchers.hasSize(3))  // ""  funciona também sem o "$"
+			.body("name", Matchers.hasItems("João da Silva", "Maria Joaquina", "Ana Júlia"))
+			.body("age[1]", Matchers.is(25))
+			.body("filhos.name", Matchers.hasItem(Arrays.asList("Zezinho", "Luizinho")))
+			.body("salary", Matchers.contains(1234.5678f, 2500, null)) // 1234.5678f -> f indica que o valor é float
+		;	
+	}
+		
 }
