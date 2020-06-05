@@ -60,4 +60,21 @@ public class UserJsonTest {
 		;				
 	}
 	
+	@Test
+	public void deveVerificarLista() {
+		given()
+		.when()
+			.get("http://restapi.wcaquino.me/users/3")
+		.then()
+			.statusCode(200)
+			.body("id", Matchers.is(3))
+			.body("name", Matchers.containsString("Júlia"))
+			.body("filhos", Matchers.hasSize(2)) // Verifica o tamanho da lista
+			.body("filhos[0].name", Matchers.is("Zezinho"))
+			.body("filhos[1].name", Matchers.is("Luizinho"))
+			.body("filhos.name", Matchers.hasItem("Zezinho")) // Verifica se a lista contém o elemento Zezeinho
+			.body("filhos.name", Matchers.hasItems("Zezinho","Luizinho"))
+		;						
+	}
+	
 }
