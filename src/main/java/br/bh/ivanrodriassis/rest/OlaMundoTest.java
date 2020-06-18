@@ -38,6 +38,7 @@ public class OlaMundoTest {
 	
 	@Test
 	public void devoConhecerOutrosFormasRestAssured() {
+
 //		Envio de uma requisição Get / A resposta do método colocado na variável local		
 		Response response = request(Method.GET, "http://restapi.wcaquino.me/ola");
 		ValidatableResponse validacao = response.then();

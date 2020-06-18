@@ -2,6 +2,7 @@ package br.bh.ivanrodriassis.rest;
 
 import static io.restassured.RestAssured.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.hamcrest.Matchers;
@@ -125,7 +126,9 @@ public class UserJsonTest {
 			.body("age.findAll{it <= 25 && it > 20}.size()", Matchers.is(1))
 			
 			/* Nome do usuário com mais de 20 anos e até 25  */
-			.body("findAll{it.age <= 25 && it.age > 20}.name", Matchers.hasItem("Maria Joaquina"))  // findAll -> verifica a partir do início da raiz
+			/* findAll -> verifica a partir do início da raiz */
+			
+			.body("findAll{it.age <= 25 && it.age > 20}.name", Matchers.hasItem("Maria Joaquina"))  
 			
 			/* Retorna o primeiro usuário da lista com idade até 25 */
 			.body("findAll{it.age <= 25}[0].name", Matchers.is("Maria Joaquina"))
@@ -169,7 +172,22 @@ public class UserJsonTest {
 			.body("salary.findAll{it != null}.sum()", Matchers.allOf(Matchers.greaterThan(3000d),
 					Matchers.lessThan(5000d)))
 			
-		;
-		
+		;		
 	}
+	
+	@Test
+	public void devoUnirJsonPathComJava() {
+		ArrayList <String> names = 
+			given()
+			.when()
+				.get("http://restapi.wcaquino.me/users")
+			.then()
+				.statusCode(200)
+				.extract().path("name.findAll{it.startsWith('Maria')}");			
+			;	
+		Assert.assertEquals(1, names.size());
+		Assert.assertTrue(names.get(0).equalsIgnoreCase("mAriA Joaquina"));
+		Assert.assertEquals(names.get(0).toUpperCase(), "maria joaquina".toUpperCase());
+	}
+	
 }
