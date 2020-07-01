@@ -170,8 +170,7 @@ public class UserJsonTest {
 			
 			/* Outra forma - Retorna a soma do salário da coleção */
 			.body("salary.findAll{it != null}.sum()", Matchers.allOf(Matchers.greaterThan(3000d),
-					Matchers.lessThan(5000d)))
-			
+					Matchers.lessThan(5000d)))			
 		;		
 	}
 	
