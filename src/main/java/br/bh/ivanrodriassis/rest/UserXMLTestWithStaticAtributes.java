@@ -12,29 +12,54 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import io.restassured.RestAssured;
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.builder.ResponseSpecBuilder;
+import io.restassured.filter.log.LogDetail;
 import io.restassured.internal.path.xml.NodeImpl;
+import io.restassured.specification.RequestSpecification;
+import io.restassured.specification.ResponseSpecification;
 
 
 
 public class UserXMLTestWithStaticAtributes {
 
+	/* Variáveis globais - Podem ser utilizadas em todos os métodos da classe */
+	
+	public static RequestSpecification reqSpec; 
+	public static ResponseSpecification resSpec;
+	
 	@BeforeClass
 	public static void setup() {
 		RestAssured.baseURI = "https://restapi.wcaquino.me";
 //		RestAssured.port = 443; // http -> porta 80
 //		RestAssured.basePath = "/v2";
+		
+		/* Request Specification */
+		
+		RequestSpecBuilder reqBuilder = new RequestSpecBuilder();
+		reqBuilder.log(LogDetail.ALL); 
+//		requestSpecitification -> contém todos os objetos relacionados a requisição		
+		reqSpec = reqBuilder.build();
+
+		/* Response Specification */		
+		
+		ResponseSpecBuilder resBuilder = new ResponseSpecBuilder();
+		resBuilder.expectStatusCode(200);
+//		responseSpecitification -> contém todos os objetos relacionados a resposta		
+		resSpec = resBuilder.build();
+		
+		RestAssured.requestSpecification = reqSpec;
+		RestAssured.responseSpecification = resSpec;		
 	}
 	
 	@Test
 	public void devoTrabalharcomXML () {
 		
 		given()
-			.log().all()
-		.when()
+			.when()
 			.get("/usersXML/3")
 		.then()
-			.statusCode(200)
-			
+//	.statusCode(200)
 			.rootPath("user")
 //			.body("user.name", is("Ana Julia"))	-> sem utilizar o nó raiz
 			.body("name", is("Ana Julia"))
@@ -56,11 +81,11 @@ public class UserXMLTestWithStaticAtributes {
 	
 	@Test
 	public void devoFazerPesquisasAvancadasComXML () {
-		given()
+		given()			
 		.when()
 			.get("usersXML")
-		.then()
-			.statusCode(200)
+		.then()				
+//			.statusCode(200)
 			.body("users.user.size()", is(3))
 			.body("users.user.findAll{it.age.toInteger() <= 25}.size()", is(2))
 			.body("users.user.@id", hasItems("1","2","3"))
@@ -79,8 +104,8 @@ public class UserXMLTestWithStaticAtributes {
 		ArrayList<NodeImpl> nomes = given()
 		.when()
 			.get("/usersXML")
-		.then()
-			.statusCode(200)
+		.then()			
+//			.statusCode(200)
 			.extract().path("users.user.name.findAll{it.toString().contains('n')}")			
 		;			
 
@@ -91,11 +116,11 @@ public class UserXMLTestWithStaticAtributes {
 	
 	@Test
 	public void devoFazerPesquisasAvancadasComXPath () {
-		given()
+		given()			
 		.when()
 			.get("/usersXML")
 		.then()
-			.statusCode(200)
+//			.statusCode(200)
 			.body(hasXPath("count(/users/user)", is("3")))
 			.body(hasXPath("/users/user[@id='1']"))
 			.body(hasXPath("//user[@id='1']"))
