@@ -11,7 +11,7 @@ public class VerbosTest {
 	public void deveSalvarUsuario() {
 		given()
 			.log().all()
-			.contentType("application/json") // Informação que será enviado um objeto Json
+			.contentType("application/json") // (Cabeçalho) Informação que será enviado um objeto Json
 			.body("{ \"name\": \"Jose\", \"age\": 50 }") // Requisição enviando objeto Json
 		.when() 
 			// Objeto do tipo post para esse recurso "post"
@@ -24,10 +24,27 @@ public class VerbosTest {
 			.body("age", is(50))
 		;		
 	}
+	
+	@Test
+	public void naoDeveSalvarUsuarioSemNome() {
+		
+		given()
+			.log().all()
+			.contentType("application/json") // (Cabeçalho) Informação que será enviado um objeto Json
+			.body("{ \"age\": 50 }") // Requisição enviando objeto Json
+		.when() 
+			// Objeto do tipo post para esse recurso "post"
+			.post("https://restapi.wcaquino.me/users")
+		.then()		
+			.log().all()
+			.statusCode(400) // Bad request - falha no registro
+			.body("error", is("Name é um atributo obrigatório"))
+		;		
+	}
+	
 }
 
-/* Json representação de um objeto javaScript - coluna e valor que desejo inserir */
-//{ "name": "Jose", "age": 50 }
+
 
 
 
