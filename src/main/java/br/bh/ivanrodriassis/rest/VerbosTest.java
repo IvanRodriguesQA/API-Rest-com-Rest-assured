@@ -62,9 +62,30 @@ public class VerbosTest {
 			.body("user.age", is("50"))
 		;		
 	}
+	
+	@Test
+	public void deveAlterarUsuario() {
+		given()
+			.log().all()
+			.contentType("application/json") // (Cabeçalho) Informação que será enviado um objeto Json
+			.body("{ \"name\": \"Usuario alterado\", \"age\": 80 }") // Requisição enviando objeto Json
+		.when() 
+			// Usuário que será alterado
+			.put("https://restapi.wcaquino.me/users/1")
+		.then()		
+			.log().all()
+			.statusCode(200) // Resposta esperada - 200 (sucesso na operação)
+			.body("id", is(1))
+			.body("name", is("Usuario alterado"))
+			.body("age", is(80))
+			.body("salary", is(1234.5678f))
+		;		
+	}
 }
 /* Formato XML do que será enviado no post
 <user> <name>Jose</name> <age>50</age> </user>
 */
+
+// http://restapi.wcaquino.me/users/1
 
 
