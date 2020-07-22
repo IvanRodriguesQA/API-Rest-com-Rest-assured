@@ -5,6 +5,8 @@ import static org.hamcrest.Matchers.*;
 
 import org.junit.Test;
 
+import io.restassured.http.ContentType;
+
 public class VerbosTest {
 
 	@Test
@@ -42,9 +44,27 @@ public class VerbosTest {
 		;		
 	}
 	
+	@Test
+	public void deveSalvarUsuarioViaXML() {
+		given()
+			.log().all()
+			.contentType(ContentType.XML) // Na dúvida do que enviar pode ser enviado um enum 
+//			.contentType("application/xml") // (Cabeçalho) Informação que será enviado um objeto XML
+			.body("<user><name>Jose</name><age>50</age></user>") // Requisição enviando objeto XML
+		.when() 
+			// Objeto do tipo post para esse recurso "post"
+			.post("https://restapi.wcaquino.me/usersXML")
+		.then()		
+			.log().all()
+			.statusCode(201) // Resposta esperada - 201 (criado)
+			.body("user.@id", is(notNullValue()))
+			.body("user.name", is("Jose"))
+			.body("user.age", is("50"))
+		;		
+	}
 }
-
-
-
+/* Formato XML do que será enviado no post
+<user> <name>Jose</name> <age>50</age> </user>
+*/
 
 
