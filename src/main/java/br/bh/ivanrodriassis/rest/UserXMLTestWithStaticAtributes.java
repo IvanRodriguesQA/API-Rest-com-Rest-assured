@@ -1,11 +1,14 @@
 package br.bh.ivanrodriassis.rest;
 
-import static org.hamcrest.Matchers.*;
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.hasXPath;
+import static org.hamcrest.Matchers.is;
 
 import java.util.ArrayList;
-import java.util.concurrent.CountDownLatch;
-
-import static io.restassured.RestAssured.*;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
