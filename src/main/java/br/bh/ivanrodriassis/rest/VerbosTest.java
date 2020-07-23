@@ -4,6 +4,9 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.Test;
 
 import io.restassured.http.ContentType;
@@ -25,6 +28,38 @@ public class VerbosTest {
 			.body("id", is(notNullValue()))
 			.body("name", is("Jose"))
 			.body("age", is(50))
+		;		
+	}
+	
+	/* Serialização -> Transformar um objeto em formato de byte, texto em 
+	 * algo que possa ser armazenado. */ 
+	
+	/* Deserialização -> o processo de pegar um conjunto de bytes e texto e voltar
+	 * para um objeto. */
+	
+	// Serialização MAP - (Necessário inlcuir a dependência "gson" no arquivo pom)
+	
+	@Test
+	public void deveSalvarUsuarioUsandoMap() {
+		
+// Map -> com se fosse uma lista mais ele armazena pares
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("name", "Usuario via map");
+		params.put("age", 25);
+				
+		given()
+			.log().all()
+			.contentType("application/json") 
+			.body(params)
+		.when() 
+			.post("https://restapi.wcaquino.me/users")
+		.then()		
+			.log().all()
+			.statusCode(201)
+			.body("id", is(notNullValue()))
+			.body("name", is("Usuario via map"))
+			.body("age", is(25))
 		;		
 	}
 	
@@ -146,8 +181,7 @@ public class VerbosTest {
 	@Test
 	public void naoDeveRemoverUsuarioInexistente() {
 		given()
-			.log().all()
-			
+			.log().all()			
 		.when()
 			.delete("https://restapi.wcaquino.me/users/1000")
 		.then()
