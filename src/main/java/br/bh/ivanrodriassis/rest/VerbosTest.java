@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.notNullValue;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.hamcrest.Matcher;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -146,6 +147,55 @@ public class VerbosTest {
 		;		
 	}
 	
+	@Test
+	public void deveSalvarUsuarioViaXMLUsandoObjeto() {
+		
+		User user = new User("Usuario XML", 40);
+						
+		given()
+			.log().all()
+			.contentType(ContentType.XML)  
+			.body(user) 
+		.when() 
+			.post("https://restapi.wcaquino.me/usersXML")
+		.then()		
+			.log().all()
+			.statusCode(201)
+			.body("user.@id", is(notNullValue()))
+			.body("user.name", is("Usuario XML"))
+			.body("user.age", is("40"))
+		;		
+	}
+
+	@Test
+	public void deveDeserializarXMLAoSalvarUsuario() {
+		
+		User user = new User("Usuario XML", 40);
+						
+		User usuarioInserido = given()
+			.log().all()
+			.contentType(ContentType.XML)  
+			.body(user) 
+		.when() 
+			.post("https://restapi.wcaquino.me/usersXML")
+		.then()		
+			.log().all()
+			.statusCode(201)
+			.extract().body().as(User.class)			
+		;		
+		
+		Assert.assertThat(usuarioInserido.getId(), notNullValue());
+		Assert.assertThat(usuarioInserido.getName(), is("Usuario XML"));
+		Assert.assertThat(usuarioInserido.getAge(), is(40));
+	}
+
+	
+	
+	private Matcher<? super Object> nullValue() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	@Test
 	public void deveAlterarUsuario() {
 		given()
