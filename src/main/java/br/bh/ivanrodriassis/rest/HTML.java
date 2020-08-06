@@ -1,9 +1,8 @@
 package br.bh.ivanrodriassis.rest;
 
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 
-import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
+import org.hamcrest.xml.HasXPath;
 import org.junit.Test;
 
 import io.restassured.http.ContentType;
@@ -26,6 +25,21 @@ public class HTML {
 			.body("html.body.div.table.tbody.tr[1].td[2]", is("25"))
 			.appendRootPath("html.body.div.table.tbody")
 			.body("tr.find{it.toString().startsWith('2')}.td[1]", is("Maria Joaquina"))
+		;
+	}
+	
+	@Test
+	public void deveFazerBuscasComXpathEmHTML() {
+		given()
+			.log().all()
+		.when()
+			.get("http://restapi.wcaquino.me/v2/users?format=clean")
+		.then()
+			.log().all()
+			.statusCode(200)
+			.contentType(ContentType.HTML)		
+			.body(hasXPath("count(//table/tr)", is("4")))
+			.body(hasXPath("//td[text() = '2']/../td[2]", is("Maria Joaquina")))
 		;
 	}
 }
