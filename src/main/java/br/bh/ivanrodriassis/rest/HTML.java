@@ -2,7 +2,6 @@ package br.bh.ivanrodriassis.rest;
 
 import static org.hamcrest.Matchers.*;
 
-import org.hamcrest.xml.HasXPath;
 import org.junit.Test;
 
 import io.restassured.http.ContentType;
