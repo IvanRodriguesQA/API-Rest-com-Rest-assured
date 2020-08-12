@@ -4,9 +4,16 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 
 import org.hamcrest.Matchers;
+import org.junit.Assert;
 import org.junit.Test;
+
+import com.sun.imageio.spi.OutputStreamImageOutputStreamSpi;
 
 
 public class FileTest {
@@ -50,6 +57,26 @@ public class FileTest {
 			.time(lessThan(9000L)) // Define um tempo máximo de resposta da requisição
 			.statusCode(200) 
 		;
+	}	
+	
+	@Test
+	public void deveBaixarArquivo() throws IOException {
+		byte[] image = given()
+			.log().all()						
+		.when()
+			.get("http://restapi.wcaquino.me/download")
+		.then()
+//			.log().all()
+			.statusCode(200)
+			.extract().asByteArray();// Ao acionar ctrl 1 a variável byte é criada
+		;
+		File imagem = new File("src/main/resources/file.jpg"); // Local em que o arquivo será baixado
+		OutputStream out = new FileOutputStream(imagem);
+		out.write(image);
+		out.close();
+		
+		System.out.println(imagem.length());
+		Assert.assertThat(imagem.length(), lessThan(100000L));
 	}	
 	
 }
