@@ -1,12 +1,12 @@
 package br.bh.ivanrodriassis.rest;
 
-import static org.hamcrest.Matchers.*;
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.hasXPath;
+import static org.hamcrest.Matchers.is;
 
 import org.junit.Test;
 
 import io.restassured.http.ContentType;
-
-import static io.restassured.RestAssured.given;
 
 public class HTML {
 

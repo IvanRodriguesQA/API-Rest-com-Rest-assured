@@ -3,11 +3,10 @@ package br.bh.ivanrodriassis.rest;
 import static io.restassured.RestAssured.given;
 
 import org.junit.Test;
+import org.xml.sax.SAXParseException;
 
 import io.restassured.matcher.RestAssuredMatchers;
 import io.restassured.module.jsv.JsonSchemaValidator;
-
-import org.xml.sax.SAXParseException;
 
 
 

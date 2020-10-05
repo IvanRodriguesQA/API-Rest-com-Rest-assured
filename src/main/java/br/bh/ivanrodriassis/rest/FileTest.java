@@ -1,19 +1,16 @@
 package br.bh.ivanrodriassis.rest;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.lessThan;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
-
-import com.sun.imageio.spi.OutputStreamImageOutputStreamSpi;
 
 
 public class FileTest {
